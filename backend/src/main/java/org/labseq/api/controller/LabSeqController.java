@@ -1,5 +1,6 @@
 package org.labseq.api.controller;
 
+import java.math.BigInteger;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,28 +22,28 @@ import jakarta.validation.constraints.NotBlank;
 public class LabSeqController {
 
     public static final String BASE_URL = "/api/v1/";
-    private static Map<Integer, Integer> labSeqMap;
+    private static Map<Integer, BigInteger> labSeqMap;
     static {
         labSeqMap = new ConcurrentHashMap<>();
-        labSeqMap.put(0, 0);
-        labSeqMap.put(1, 1);
-        labSeqMap.put(2, 0);
-        labSeqMap.put(3, 1);
+        labSeqMap.put(0, BigInteger.ZERO);
+        labSeqMap.put(1, BigInteger.ONE);
+        labSeqMap.put(2, BigInteger.ZERO);
+        labSeqMap.put(3, BigInteger.ONE);
     }
 
     @RequestMapping(value = "labseq/{n}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @Cacheable(value = "getIndexCache")
-    public Integer getIndex(@PathVariable("n") @NotBlank @Min(value = 0) @Max(value = 20000) Integer n) {
+    public String getIndex(@PathVariable("n") @NotBlank @Min(value = 0) @Max(value = 20000) Integer n) {
         return buildSequence(n);
     }
 
-    private static Integer buildSequence(Integer n) {
+    private static String buildSequence(Integer n) {
         for (int key = 4; key <= n; key++) {
             int keyFinal = key;
-            labSeqMap.computeIfAbsent(key, value -> labSeqMap.get(keyFinal - 4) + labSeqMap.get(keyFinal - 3));
+            labSeqMap.computeIfAbsent(key, value -> labSeqMap.get(keyFinal - 4).add(labSeqMap.get(keyFinal - 3)));
         }
-        return labSeqMap.get(n);
+        return labSeqMap.get(n).toString();
     }
 
 }
