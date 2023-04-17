@@ -1,20 +1,34 @@
 <div class="container">
-  <h1 class="heading"><strong>LabSeq </strong>Demo</h1>
+  <h2>LabSeq Demo</h2>
 
-  <div class="form-group">
-    <label for="index2Compute">Index to Compute:</label>
-    <input type="text" class="form-control" name="index2Compute" [(ngModel)]="index2Compute">
-    <button type="button" (click)="getResult()">Submit</button>
-  </div>
+  <form #indexForm="ngForm">
+    <div class="cross-validation"
+      [class.cross-validation-error]="indexForm.errors && (indexForm.touched || indexForm.dirty)">
+      <div class="form-group">
 
-  <div *ngIf="loading">loading...</div>
+        <label for="name">Index Value</label>
+        <input type="number" id="indexValue" name="indexValue" class="form-control" required min="0" max="20000"
+          [(ngModel)]="index2Compute" #indexValueVal="ngModel">
 
-  <div *ngIf="errorMessage" class="alert alert-warning">
-    <strong>Warning!</strong> {{errorMessage | json}}
-  </div>
-  <div *ngIf="result">
-    <p>
-     Result: {{result}}
-    </p>
-  </div>
-</div>
+        <div *ngIf="indexValueVal.invalid && (indexValueVal.dirty || indexValueVal.touched)" class="alert">
+
+          <div *ngIf="indexValueVal.errors?.['required']">
+            A value is required.
+          </div>
+          <div *ngIf="indexValueVal.errors?.['min']">
+            Value must be greater or equal to 0.
+          </div>
+          <div *ngIf="indexValueVal.errors?.['max']">
+            Maximum value is 20000.
+          </div>
+        </div>
+      </div>
+
+      <!-- <p>Complete the form to enable the Submit button.</p> -->
+      <button type="button" (click)="postResult()" [disabled]="indexForm.invalid">Submit</button>
+
+      <div *ngIf="result">
+        <p> Result: {{result}} </p>
+      </div>
+
+    </div>

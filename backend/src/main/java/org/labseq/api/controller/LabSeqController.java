@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 // @CrossOrigin(origins = "http://localhost:4200")
 @CrossOrigin(origins = "*")
@@ -35,14 +35,14 @@ public class LabSeqController {
     @RequestMapping(value = "labseq/{n}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @Cacheable(value = "getIndexCache")
-    public String getIndex(@PathVariable("n") @NotBlank @Min(value = 0) @Max(value = 20000) Integer n) {
+    public String getIndex(@PathVariable("n") @NotEmpty @Min(value = 0) @Max(value = 20000) Integer n) {
         return buildSequence(n);
     }
 
     @RequestMapping(value = "labseq/{n}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     @Cacheable(value = "postIndexCache")
-    public String postIndex(@PathVariable("n") @NotBlank @Min(value = 0) @Max(value = 20000) Integer n) {
+    public String postIndex(@PathVariable("n") @NotEmpty @Min(0) @Max(20000) Integer n) {
         return buildSequence(n);
     }
 
