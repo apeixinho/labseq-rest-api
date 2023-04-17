@@ -16,4 +16,11 @@ export class LabSeqService {
     // const requestUrl = `${this.baseUrl}/${index2Compute}`;
     return this.httpClient.get(this.baseUrl+'/'+index2Compute);
   }
+
+  postIndexValue(index2Compute: string): Observable<any> {
+    const headers = { 'content-type': 'application/json'}
+    // const body=JSON.stringify(index2Compute);
+    // console.log(body)
+    return this.httpClient.post(this.baseUrl + '/'+index2Compute,index2Compute ,{'headers':headers})
+  }
 }

@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  angular:
+    build: frontend
+    container_name: labseq-frontend
+    ports:
+    - "80:4200"
+    networks:
+    - labseq-network
+    depends_on:
+    - springboot
+    links:
+      - springboot
+    # hostname: frontend
+
+  springboot: 
+    build: backend
+    container_name: labseq-backend
+    ports:
+    - "8080:8080"
+    networks:
+    - labseq-network
+    # hostname: backend 
+networks:
+  labseq-network:
