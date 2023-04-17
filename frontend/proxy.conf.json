@@ -1,0 +1,6 @@
+{
+  "/api/v1": {
+    "target": "http://springboot:8080",
+    "secure": false
+  }
+}

@@ -16,7 +16,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
-@CrossOrigin(origins = "http://localhost:4200")
+// @CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(LabSeqController.BASE_URL)
 public class LabSeqController {
@@ -35,6 +36,13 @@ public class LabSeqController {
     @ResponseStatus(HttpStatus.OK)
     @Cacheable(value = "getIndexCache")
     public String getIndex(@PathVariable("n") @NotBlank @Min(value = 0) @Max(value = 20000) Integer n) {
+        return buildSequence(n);
+    }
+
+    @RequestMapping(value = "labseq/{n}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    @Cacheable(value = "postIndexCache")
+    public String postIndex(@PathVariable("n") @NotBlank @Min(value = 0) @Max(value = 20000) Integer n) {
         return buildSequence(n);
     }
 
